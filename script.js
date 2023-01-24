@@ -48,14 +48,8 @@ const alertContinue = function() {
     }
 }
 
-const parsePage1 = function() {
-    const sections = document.querySelectorAll('ss > no');
-    sections.forEach(section => {
-        // If not a knowledage and skills section, skip it.
-        if (!/^\([b,c]\) Knowledge and skills./.test(section.textContent)) return;
-        const skills = [...section.children];
-        skills.forEach(skill => {
-            const skillRow = [subchapter, subchapterValue];
+const fillSkillData = function(skill, sectionTitle, leadingSkillTitle = '') {
+    const skillRow = [sectionTitle, subchapterValue];
             let skillRawValue = '';
 
             // Skills without subskills
@@ -88,52 +82,39 @@ const parsePage1 = function() {
                     }
                 });
                 nextPageTitleStart = subSkillRowTitleStart;
+
+            // Leading Subkills (p2)
+            } else if (skill.nodeName == 'SP') {
+                const leadingSubskills = [...skill.children];
+                leadingSubskills.forEach(subskill => {
+                    skillRawValue = subskill.childNodes[0].nodeValue;
+                    const leadingSubskillRow = [leadingSkillTitle, subchapterValue];
+                    leadingSubskillRow[0] += trimTitle(skillRawValue);
+                    leadingSubskillRow.push(trimDescription(skillRawValue));
+                    rows.push(leadingSubskillRow);
+                })
             }
+}
+
+const parsePage1 = function() {
+    const sections = document.querySelectorAll('ss > no');
+    sections.forEach(section => {
+        // If not a knowledage and skills section, skip it.
+        if (!/^\([b,c]\) Knowledge and skills./.test(section.textContent)) return;
+        const skills = [...section.children];
+        const sectionTitle = subchapter + trimTitle(section.textContent);
+        skills.forEach(skill => {
+            fillSkillData(skill, sectionTitle);
         });
     });
 }
 
 const parsePage2 = function(pTwoTitleStart) {
     const skills = document.querySelectorAll('td > sp, td > pp');
+    const sectionTitle = pTwoTitleStart.slice(0,9);
+    const leadingSkillTitle = pTwoTitleStart;
     skills.forEach(skill => {
-        const skillRow = [subchapter, subchapterValue]
-
-        // Leading Subskills 
-        if (skill.nodeName == 'SP') {
-            const subskills = [...skill.children];
-            subskills.forEach(subskill => {
-                const rawValue = subskill.childNodes[0].nodeValue;
-                const subskillRow = [pTwoTitleStart, subchapterValue];
-                subskillRow[0] += trimTitle(rawValue);
-                subskillRow.push(trimDescription(rawValue));
-                rows.push(subskillRow);
-            })
-        // Skills with subskills
-        } else if (skill.nodeName = 'PP' && skill.children[0].children.length > 1) {
-            titleStart = skillRow[0] += trimTitle(skill.childNodes[1].childNodes[0].nodeValue);
-            skillRow.push(trimDescription(skill.childNodes[1].childNodes[0].nodeValue));
-            rows.push(skillRow);
-            // Subskills
-            [...skill.childNodes[1].children].forEach(subskill => {
-                const subskillRow = [titleStart, subchapterValue];
-                if (subskill.nodeName == 'SP') {
-                    subskillRow[0] += trimTitle(subskill.children[0].innerText);
-                    subskillRow.push(
-                        trimDescription(subskill.children[0].innerText)
-                    );
-                    rows.push(subskillRow);
-                }
-            });
-
-        // Skills without Subskills
-        } else if (skill.nodeName == 'PP' && skill.children[0].children.length == 1) {
-            skillRow[0]+= trimTitle(skill.children[0].innerText);
-            skillRow.push(
-                trimDescription(skill.children[0].innerText)
-            );
-            rows.push(skillRow);
-        }
-    
+        fillSkillData(skill, sectionTitle, leadingSkillTitle);
     });
 }
 
@@ -146,9 +127,10 @@ const init = function() {
         pageNumber = 2;
         parsePage2(currentPageTitleStart);
     }
+    alertCSV();
+    alertContinue(); 
 }
 
 
 init();
-alertCSV();
-alertContinue();    
+   
