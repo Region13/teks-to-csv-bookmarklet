@@ -111,7 +111,8 @@ const parsePage1 = function() {
 
 const parsePage2 = function(pTwoTitleStart) {
     const skills = document.querySelectorAll('td > sp, td > pp');
-    const sectionTitle = pTwoTitleStart.slice(0,9);
+    const titleIndex = pTwoTitleStart.lastIndexOf('(');
+    const sectionTitle = pTwoTitleStart.slice(0,titleIndex);
     const leadingSkillTitle = pTwoTitleStart;
     skills.forEach(skill => {
         fillSkillData(skill, sectionTitle, leadingSkillTitle);
