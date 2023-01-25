@@ -8,7 +8,7 @@ Drag and drop the following link into your bookmarks bar:
 
 ## Usage
 1. In the [TAC Viewer](https://texreg.sos.state.tx.us/public/readtac$ext.viewtac), Navigate to the Rule you would like to convert to a CSV file. For example: [RULE §115.38, Health I (One-Half Credit)](https://texreg.sos.state.tx.us/public/readtac$ext.TacPage?sl=R&app=9&p_dir=&p_rloc=&p_tloc=&p_ploc=&pg=1&p_tac=&ti=19&pt=2&ch=115&rl=38)
-2. To run the code, simply click the 'TEKS to CSV'bookmarklet in your bookmarks bar. An alert will appear and invite you to download the CSV file. 
+2. To run the code, simply click the '🔖 TEKS to CSV' bookmarklet in your bookmarks bar. An alert will appear and invite you to download the CSV file. 
 3. If the rule is split across an additional webpage, a second alert will appear inviting you to go to the next page. Click OK. 
 4. Once you have navigated to the second page, click the 'TEKS to CSV' bookmarklet again to download page 2 of the CSV.
 
@@ -20,3 +20,7 @@ This bookmarket has only been tested with the following TEKS Chapters:
 * [Chapter 112: Science](https://texreg.sos.state.tx.us/public/readtac$ext.ViewTAC?tac_view=4&ti=19&pt=2&ch=112)
 
 Further testing may be required for future chapters. 
+
+---
+
+[View on GitHub](https://github.com/Region13/teks-to-csv-bookmarklet)
