@@ -1,6 +1,8 @@
 # teks-to-csv-bookmarklet
 A JavaScript bookmarklet that generates a CSV of the Texas Essential Knowledge and Skills (TEKS). It is designed for use with the [TAC Viewer](https://texreg.sos.state.tx.us/public/readtac$ext.viewtac) hosted by the Texas Secretary of State. 
 
+![Screenshot of an alert on the TAC website "Would you like to download 115.38_p1.csv"](/docs/teks-to-csv-screenshot.jpg)
+
 ## Installation
 Drag and drop the following link into your bookmarks bar: 
 
