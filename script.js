@@ -5,8 +5,11 @@ const rows = [
 const subchapter = document.querySelector('td[width="160"]').textContent.split('§')[1];
 const subchapterValue = subchapter + '.';
 const continueLink = document.querySelector('a[name="Continued"]');
+const params = new URLSearchParams(window.location.search);
 let nextPageTitleStart = '';
-let pageNumber = 1;
+let pageNumber = params.has('pg') ? params.get('pg') : 1;
+
+console.log(window.location.search);
 
 const trimDescription = function(desc) {
     const descStart = desc.indexOf(')') + 2;
@@ -41,7 +44,7 @@ const alertCSV = function() {
 
 const alertContinue = function() {
     if (!continueLink) return;
-    const message = 'This rule is split across two pages, would you like to go to the next page?'
+    const message = 'This rule is split across multiple pages, press OK to go to the next page, then run the bookmarklet again.'
     if (window.confirm(message)) {
         continueLink.href += `#titleStart${nextPageTitleStart}`;
         continueLink.click();
@@ -83,7 +86,7 @@ const fillSkillData = function(skill, sectionTitle, leadingSkillTitle = '') {
                 });
                 nextPageTitleStart = subSkillRowTitleStart;
 
-            // Leading Subkills (p2)
+            // Leading Subkills (p2+)
             } else if (skill.nodeName == 'SP') {
                 const leadingSubskills = [...skill.children];
                 leadingSubskills.forEach(subskill => {
@@ -125,7 +128,6 @@ const init = function() {
         parsePage1();
     } else if (hash.includes('titleStart')) {
         const currentPageTitleStart = hash.slice(11);
-        pageNumber = 2;
         parsePage2(currentPageTitleStart);
     }
     alertCSV();
